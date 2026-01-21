@@ -5,10 +5,10 @@ class FoodModel {
   double price;
 
   FoodModel({
-  required this.id,
-  required this.name,
-  required this.description,
-  required this.price,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.price,
   });
 
   factory FoodModel.fromMap(Map<String, dynamic> map, String id) {
@@ -21,10 +21,6 @@ class FoodModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'description': description,
-      'price': price,
-    };
+    return {'name': name, 'description': description, 'price': price};
   }
 }

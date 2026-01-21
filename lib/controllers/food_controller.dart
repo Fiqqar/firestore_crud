@@ -33,7 +33,7 @@ class FoodController extends GetxController {
     });
   }
 
-  void setEditFood(FoodModel food){
+  void setEditFood(FoodModel food) {
     nameController.text = food.name;
     descriptionController.text = food.description;
     priceController.text = food.price.toString();
@@ -50,9 +50,9 @@ class FoodController extends GetxController {
 
   Future<void> updateFood(FoodModel food) async {
     await dbRef.child(food.id).update({
-      'name' : nameController.text,
-      'description' : descriptionController,
-      'price' : double.parse(priceController.text)
+      'name': nameController.text,
+      'description': descriptionController,
+      'price': double.parse(priceController.text),
     });
   }
 
