@@ -4,6 +4,9 @@ class CustomCard extends StatelessWidget {
   final String name;
   final String description;
   final int price;
+
+  final Widget? leadingIcon;
+  final List<Widget>? actions;
   final VoidCallback? onTap;
 
   const CustomCard({
@@ -11,6 +14,8 @@ class CustomCard extends StatelessWidget {
     required this.name,
     required this.description,
     required this.price,
+    this.leadingIcon,
+    this.actions,
     this.onTap,
   });
 
@@ -21,16 +26,18 @@ class CustomCard extends StatelessWidget {
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(
-        leading: const Icon(Icons.fastfood),
+        leading: leadingIcon ?? const Icon(Icons.fastfood),
         title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(description),
-        trailing: Text(
-          "Rp $price",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
-          ),
-        ),
+        trailing: actions == null
+            ? Text(
+                "Rp $price",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              )
+            : Row(mainAxisSize: MainAxisSize.min, children: actions!),
         onTap: onTap,
       ),
     );
