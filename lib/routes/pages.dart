@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 
 class AppPages {
   static final pages = [
-   GetPage(name: AppRoutes.listPage, page: () => FoodListPage())
+   GetPage(name: AppRoutes.listPage, page: () =>  FoodListPage())
   ];
 }

@@ -9,7 +9,7 @@ class FoodListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Daftar Makanan")),
       body: ListView(
-        children: const [
+        children:  [
           CustomCard(name: "iziz", description: "aziz", price: 1000),
         ],
       ),
