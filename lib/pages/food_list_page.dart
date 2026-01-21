@@ -1,8 +1,13 @@
 import 'package:firestore_crud/component/custom_card.dart';
+import 'package:firestore_crud/controllers/food_controller.dart';
+import 'package:firestore_crud/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FoodListPage extends StatelessWidget {
   FoodListPage({super.key});
+
+  final controller = Get.find<FoodController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,19 @@ class FoodListPage extends StatelessWidget {
             description: "Deskripsi makanan",
             price: 1000,
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.delete)),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+              IconButton(
+                onPressed: () {
+                  controller.deleteFood(controller.foodList[index].id);
+                },
+                icon: const Icon(Icons.delete),
+              ),
+              IconButton(
+                onPressed: () {
+                  controller.setEditFood(controller.foodList[index]);
+                  Get.toNamed(AppRoutes.editPage);
+                },
+                icon: const Icon(Icons.edit),
+              ),
             ],
           );
         },

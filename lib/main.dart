@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
   runApp(const MainApp());
 }
@@ -16,8 +16,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-       initialRoute: AppRoutes.listPage,
-       getPages: AppPages.pages
+      initialRoute: AppRoutes.listPage,
+      getPages: AppPages.pages,
     );
   }
 }
