@@ -1,10 +1,16 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firestore_crud/models/food_model.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 class FoodController extends GetxController {
   var foodList = <FoodModel>[].obs;
+
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final priceController = TextEditingController();
+
   final dbRef = FirebaseDatabase.instance.ref().child('food');
 
   @override
@@ -27,6 +33,12 @@ class FoodController extends GetxController {
     });
   }
 
+  void setEditFood(FoodModel food){
+    nameController.text = food.name;
+    descriptionController.text = food.description;
+    priceController.text = food.price.toString();
+  }
+
   Future<void> addFood(String name, String description, double price) async {
     final newRef = dbRef.push();
     await newRef.set({
@@ -37,7 +49,11 @@ class FoodController extends GetxController {
   }
 
   Future<void> updateFood(FoodModel food) async {
-    await dbRef.child(food.id).update(food.toMap());
+    await dbRef.child(food.id).update({
+      'name' : nameController.text,
+      'description' : descriptionController,
+      'price' : double.parse(priceController.text)
+    });
   }
 
   Future<void> deleteFood(String id) async {
