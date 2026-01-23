@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/food_controller.dart';
-import '../models/food_model.dart';
 
-class FoodEditPage extends StatefulWidget {
-  const FoodEditPage({super.key});
+class FoodAddPage extends StatefulWidget {
+  const FoodAddPage({super.key});
 
   @override
-  State<FoodEditPage> createState() => _FoodEditPageState();
+  State<FoodAddPage> createState() => _FoodAddPageState();
 }
 
-class _FoodEditPageState extends State<FoodEditPage> {
+class _FoodAddPageState extends State<FoodAddPage> {
   final FoodController controller = Get.find<FoodController>();
-  late FoodModel food;
 
-  late TextEditingController nameC;
-  late TextEditingController descC;
-  late TextEditingController priceC;
-
-  @override
-  void initState() {
-    super.initState();
-
-    food = Get.arguments as FoodModel;
-
-    nameC = TextEditingController(text: food.name);
-    descC = TextEditingController(text: food.description);
-    priceC = TextEditingController(text: food.price.toString());
-  }
+  final TextEditingController nameC = TextEditingController();
+  final TextEditingController descC = TextEditingController();
+  final TextEditingController priceC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +23,7 @@ class _FoodEditPageState extends State<FoodEditPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Food'),
+        title: const Text('Add Food'),
         centerTitle: true,
       ),
       body: Center(
@@ -81,17 +68,14 @@ class _FoodEditPageState extends State<FoodEditPage> {
 
                 ElevatedButton(
                   onPressed: () async {
-                    await controller.updateFood(
-                      FoodModel(
-                        id: food.id,
-                        name: nameC.text,
-                        description: descC.text,
-                        price: double.parse(priceC.text),
-                      ),
+                    await controller.addFood(
+                      nameC.text,
+                      descC.text,
+                      double.parse(priceC.text),
                     );
                     Get.back();
                   },
-                  child: const Text('Update'),
+                  child: const Text('Save'),
                 ),
               ],
             ),
