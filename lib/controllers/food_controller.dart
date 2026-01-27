@@ -21,14 +21,25 @@ class FoodController extends GetxController {
 
   void fetchFoods() {
     dbRef.onValue.listen((event) {
-      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+      final data = event.snapshot.value;
+
+      foodList.clear();
 
       if (data != null) {
-        foodList.value = data.entries
-            .map((e) => FoodModel.fromMap(e.value, e.key))
-            .toList();
-      } else {
-        foodList.clear();
+        if (data is Map) {
+          data.forEach((key, value) {
+            try {
+              if (value is Map) {
+                final mapValue = Map<String, dynamic>.from(value);
+                foodList.add(FoodModel.fromMap(mapValue, key));
+              }
+            } catch (e) {
+              print("Error converting value: $e");
+            }
+          });
+        } else {
+          print("Data snapshot is not a Map: $data");
+        }
       }
     });
   }
@@ -49,10 +60,21 @@ class FoodController extends GetxController {
   }
 
   Future<void> updateFood(FoodModel food) async {
+    final price = double.tryParse(priceController.text.trim());
+
+    if (price == null) {
+      Get.snackbar(
+        "Error",
+        "Harga harus berupa angka",
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
     await dbRef.child(food.id).update({
       'name': nameController.text,
-      'description': descriptionController,
-      'price': double.parse(priceController.text),
+      'description': descriptionController.text,
+      'price': price,
     });
   }
 

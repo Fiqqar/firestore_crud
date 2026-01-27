@@ -8,7 +8,6 @@ class FoodListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    // breakpoint
     final bool isMobile = width < 600;
     final int crossAxisCount = width >= 900
         ? 3
