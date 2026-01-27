@@ -19,6 +19,14 @@ class FoodController extends GetxController {
     fetchFoods();
   }
 
+  @override
+  void onClose() {
+    nameController.dispose();
+    descriptionController.dispose();
+    priceController.dispose();
+    super.onClose();
+  }
+
   void fetchFoods() {
     dbRef.onValue.listen((event) {
       final data = event.snapshot.value;

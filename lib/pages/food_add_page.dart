@@ -1,81 +1,97 @@
+import 'package:firestore_crud/colors/color.dart';
+import 'package:firestore_crud/component/custom_textfield.dart';
+import 'package:firestore_crud/controllers/food_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/food_controller.dart';
 
-class FoodAddPage extends StatefulWidget {
-  const FoodAddPage({super.key});
+class FoodAddPage extends StatelessWidget {
+  FoodAddPage({super.key});
 
-  @override
-  State<FoodAddPage> createState() => _FoodAddPageState();
-}
-
-class _FoodAddPageState extends State<FoodAddPage> {
-  final FoodController controller = Get.find<FoodController>();
-
-  final TextEditingController nameC = TextEditingController();
-  final TextEditingController descC = TextEditingController();
-  final TextEditingController priceC = TextEditingController();
+  final controller = Get.find<FoodController>();
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final bool isWideScreen = size.width >= 600;
+    final isWideScreen = MediaQuery.of(context).size.width >= 600;
 
     return Scaffold(
+      backgroundColor: AppColors.background,
+
       appBar: AppBar(
-        title: const Text('Add Food'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
+        title: const Text(
+          "Tambah Makanan",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
       ),
+
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: isWideScreen ? 500 : double.infinity,
-            padding: EdgeInsets.symmetric(
-              horizontal: isWideScreen ? 32 : 20,
-              vertical: 24,
-            ),
+            width: isWideScreen ? 420 : double.infinity,
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextField(
-                  controller: nameC,
-                  decoration: const InputDecoration(
-                    labelText: 'Food Name',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomTextField(
+                  controller: controller.nameController,
+                  label: "Nama Makanan",
+                  hint: "Contoh: Ayam Geprek",
+                  keyboardType: TextInputType.text,
+                  icon: Icons.restaurant,
                 ),
-                const SizedBox(height: 20),
 
-                TextField(
-                  controller: descC,
+                const SizedBox(height: 16),
+
+                CustomTextField(
+                  controller: controller.descriptionController,
+                  label: "Deskripsi",
+                  hint: "Deskripsi singkat makanan",
+                  keyboardType: TextInputType.text,
                   maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
+                  icon: Icons.notes,
                 ),
-                const SizedBox(height: 20),
 
-                TextField(
-                  controller: priceC,
+                const SizedBox(height: 16),
+
+                CustomTextField(
+                  controller: controller.priceController,
+                  label: "Harga",
+                  hint: "Contoh: 15000",
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Price',
-                    border: OutlineInputBorder(),
-                  ),
+                  icon: Icons.payments,
                 ),
-                const SizedBox(height: 32),
+
+                const SizedBox(height: 28),
 
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                   onPressed: () async {
                     await controller.addFood(
-                      nameC.text,
-                      descC.text,
-                      double.parse(priceC.text),
+                      controller.nameController.text,
+                      controller.descriptionController.text,
+                      double.parse(controller.priceController.text),
                     );
+                    controller.nameController.clear();
+                    controller.descriptionController.clear();
+                    controller.priceController.clear();
                     Get.back();
                   },
-                  child: const Text('Save'),
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ],
             ),
