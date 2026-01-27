@@ -1,102 +1,113 @@
+import 'package:firestore_crud/colors/color.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
   final String description;
   final double price;
-
-  final Widget? leadingIcon;
   final List<Widget>? actions;
-  final VoidCallback? onTap;
 
   const CustomCard({
     super.key,
     required this.name,
     required this.description,
     required this.price,
-    this.leadingIcon,
     this.actions,
-    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: SizedBox(
-          height: 96, // ⭐ FIX UTAMA: tinggi terkunci
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: AppColors.primarySoft,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.restaurant_menu, color: AppColors.primary),
+          ),
+
+          const SizedBox(width: 14),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                leadingIcon ?? const Icon(Icons.fastfood, size: 32),
-
-                const SizedBox(width: 12),
-
-                // ===== TEXT AREA =====
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
                   ),
                 ),
-
-                const SizedBox(width: 8),
-
-                // ===== PRICE + ACTION =====
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      "Rp ${price.toStringAsFixed(0)}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children:
-                          actions
-                              ?.map(
-                                (e) => SizedBox(
-                                  width: 32,
-                                  height: 32,
-                                  child: IconTheme(
-                                    data: const IconThemeData(size: 18),
-                                    child: e,
-                                  ),
-                                ),
-                              )
-                              .toList() ??
-                          [],
-                    ),
-                  ],
+                const SizedBox(height: 4),
+                Text(
+                  description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ],
             ),
           ),
-        ),
+
+          const SizedBox(width: 8),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Rp ${price.toStringAsFixed(0)}",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.price,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children:
+                    actions
+                        ?.map(
+                          (e) => SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: IconTheme(
+                              data: const IconThemeData(size: 18),
+                              child: e,
+                            ),
+                          ),
+                        )
+                        .toList() ??
+                    [],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

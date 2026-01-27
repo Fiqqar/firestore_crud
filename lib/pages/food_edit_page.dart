@@ -1,97 +1,121 @@
+import 'package:firestore_crud/colors/color.dart';
+import 'package:firestore_crud/component/custom_textfield.dart';
+import 'package:firestore_crud/controllers/food_controller.dart';
+import 'package:firestore_crud/models/food_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/food_controller.dart';
-import '../models/food_model.dart';
 
-class FoodEditPage extends StatefulWidget {
+
+class FoodEditPage extends StatelessWidget {
   const FoodEditPage({super.key});
 
   @override
-  State<FoodEditPage> createState() => _FoodEditPageState();
-}
-
-class _FoodEditPageState extends State<FoodEditPage> {
-  final FoodController controller = Get.find<FoodController>();
-  late FoodModel food;
-
-  late TextEditingController nameC;
-  late TextEditingController descC;
-  late TextEditingController priceC;
-
-  @override
-  void initState() {
-    super.initState();
-
-    food = Get.arguments as FoodModel;
-
-    nameC = TextEditingController(text: food.name);
-    descC = TextEditingController(text: food.description);
-    priceC = TextEditingController(text: food.price.toString());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final bool isWideScreen = size.width >= 600;
+    final controller = Get.find<FoodController>();
+    final foodArg = Get.arguments;
+
+    if (foodArg == null || foodArg is! FoodModel) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.back();
+        Get.snackbar(
+          'Error',
+          'Data makanan tidak ditemukan',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      });
+      return const Scaffold();
+    }
+
+    final FoodModel food = foodArg;
+    controller.setEditFood(food);
+
+    final isWideScreen = MediaQuery.of(context).size.width >= 600;
 
     return Scaffold(
+      backgroundColor: AppColors.background,
+
       appBar: AppBar(
-        title: const Text('Edit Food'),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
+        title: const Text(
+          "Edit Makanan",
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
       ),
+
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: isWideScreen ? 500 : double.infinity,
-            padding: EdgeInsets.symmetric(
-              horizontal: isWideScreen ? 32 : 20,
-              vertical: 24,
-            ),
+            width: isWideScreen ? 420 : double.infinity,
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextField(
-                  controller: nameC,
-                  decoration: const InputDecoration(
-                    labelText: 'Food Name',
-                    border: OutlineInputBorder(),
-                  ),
+                CustomTextField(
+                  controller: controller.nameController,
+                  label: "Nama Makanan",
+                  hint: "Nama makanan",
+                  keyboardType: TextInputType.text,
+                  icon: Icons.restaurant,
                 ),
-                const SizedBox(height: 20),
 
-                TextField(
-                  controller: descC,
+                const SizedBox(height: 16),
+
+                CustomTextField(
+                  controller: controller.descriptionController,
+                  label: "Deskripsi",
+                  hint: "Deskripsi makanan",
+                  keyboardType: TextInputType.text,
                   maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
+                  icon: Icons.notes,
                 ),
-                const SizedBox(height: 20),
 
-                TextField(
-                  controller: priceC,
+                const SizedBox(height: 16),
+
+                CustomTextField(
+                  controller: controller.priceController,
+                  label: "Harga",
+                  hint: "Harga makanan",
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Price',
-                    border: OutlineInputBorder(),
-                  ),
+                  icon: Icons.payments,
                 ),
-                const SizedBox(height: 32),
+
+                const SizedBox(height: 28),
 
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
                   onPressed: () async {
                     await controller.updateFood(
                       FoodModel(
                         id: food.id,
-                        name: nameC.text,
-                        description: descC.text,
-                        price: double.parse(priceC.text),
+                        name: controller.nameController.text,
+                        description: controller.descriptionController.text,
+                        price: double.parse(controller.priceController.text),
                       ),
                     );
+
                     Get.back();
+                    Get.snackbar(
+                      'Sukses',
+                      'Makanan berhasil diupdate',
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
                   },
-                  child: const Text('Update'),
+                  child: const Text(
+                    "Update",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
               ],
             ),
