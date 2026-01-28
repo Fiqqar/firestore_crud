@@ -18,7 +18,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
@@ -32,6 +32,7 @@ class CustomCard extends StatelessWidget {
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: 46,
@@ -40,15 +41,18 @@ class CustomCard extends StatelessWidget {
               color: AppColors.primarySoft,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(Icons.restaurant_menu, color: AppColors.primary),
+            child: const Icon(
+              Icons.restaurant_menu,
+              color: AppColors.primary,
+            ),
           ),
 
           const SizedBox(width: 14),
 
           Expanded(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   name,
@@ -63,7 +67,7 @@ class CustomCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 13,
@@ -74,11 +78,11 @@ class CustomCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
 
           Column(
+            mainAxisSize: MainAxisSize.min, // ⬅️ KUNCI UTAMA
             crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Rp ${price.toStringAsFixed(0)}",
@@ -87,23 +91,26 @@ class CustomCard extends StatelessWidget {
                   color: AppColors.price,
                 ),
               ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children:
-                    actions
-                        ?.map(
-                          (e) => SizedBox(
-                            width: 28,
-                            height: 28,
-                            child: IconTheme(
-                              data: const IconThemeData(size: 18),
-                              child: e,
+              const SizedBox(height: 4),
+              SizedBox(
+                height: 28, 
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children:
+                      actions
+                          ?.map(
+                            (e) => SizedBox(
+                              width: 28,
+                              height: 28,
+                              child: IconTheme(
+                                data: const IconThemeData(size: 18),
+                                child: e,
+                              ),
                             ),
-                          ),
-                        )
-                        .toList() ??
-                    [],
+                          )
+                          .toList() ??
+                      [],
+                ),
               ),
             ],
           ),

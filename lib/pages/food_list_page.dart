@@ -67,7 +67,7 @@ class FoodListPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    "Yuk mulai tambahin makanan favorit kamu\nbiar daftar menunya keliatan rame 🍽️",
+                    "Yuk mulai tambahin makanan favorit lu!",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14,
