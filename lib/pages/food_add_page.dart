@@ -32,7 +32,7 @@ class FoodAddPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: isWideScreen ? 420 : double.infinity,
+            width:controller.screenWidth,
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

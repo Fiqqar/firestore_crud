@@ -13,6 +13,17 @@ class FoodController extends GetxController {
 
   final dbRef = FirebaseDatabase.instance.ref().child('food');
 
+  MediaQueryData get mq => MediaQuery.of(Get.context!);
+
+  double get screenWidth => mq.size.width;
+
+  int get crossAxisCount {
+    if (screenWidth >= 900) return 3;
+    if (screenWidth >= 600) return 2;
+    return 1;
+  }
+
+
   @override
   void onInit() {
     super.onInit();
@@ -30,24 +41,16 @@ class FoodController extends GetxController {
   void fetchFoods() {
     dbRef.onValue.listen((event) {
       final data = event.snapshot.value;
-
       foodList.clear();
 
-      if (data != null) {
-        if (data is Map) {
-          data.forEach((key, value) {
-            try {
-              if (value is Map) {
-                final mapValue = Map<String, dynamic>.from(value);
-                foodList.add(FoodModel.fromMap(mapValue, key));
-              }
-            } catch (e) {
-              print("Error converting value: $e");
-            }
-          });
-        } else {
-          print("Data snapshot is not a Map: $data");
-        }
+      if (data is Map) {
+        data.forEach((key, value) {
+          if (value is Map) {
+            foodList.add(
+              FoodModel.fromMap(Map<String, dynamic>.from(value), key),
+            );
+          }
+        });
       }
     });
   }
@@ -59,8 +62,7 @@ class FoodController extends GetxController {
   }
 
   Future<void> addFood(String name, String description, double price) async {
-    final newRef = dbRef.push();
-    await newRef.set({
+    await dbRef.push().set({
       'name': name,
       'description': description,
       'price': price,
@@ -71,11 +73,7 @@ class FoodController extends GetxController {
     final price = double.tryParse(priceController.text.trim());
 
     if (price == null) {
-      Get.snackbar(
-        "Error",
-        "Harga harus berupa angka",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      Get.snackbar("Error", "Harga harus berupa angka");
       return;
     }
 

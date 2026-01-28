@@ -29,7 +29,7 @@ class FoodEditPage extends StatelessWidget {
     final FoodModel food = foodArg;
     controller.setEditFood(food);
 
-    final isWideScreen = MediaQuery.of(context).size.width >= 600;
+
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -50,7 +50,7 @@ class FoodEditPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: isWideScreen ? 420 : double.infinity,
+            width: controller.screenWidth,
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

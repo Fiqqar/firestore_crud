@@ -13,13 +13,9 @@ class FoodListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    
 
-    final int crossAxisCount = width >= 900
-        ? 3
-        : width >= 600
-        ? 2
-        : 1;
+   
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -128,7 +124,7 @@ class FoodListPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text(
-                      "Hari ini",
+                      "Tersedia",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -145,7 +141,7 @@ class FoodListPage extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 itemCount: controller.foodList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
+                  crossAxisCount: controller.crossAxisCount,
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
                   childAspectRatio: 3.6,
